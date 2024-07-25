@@ -24,14 +24,18 @@ export default function SortingComparisons({
   const [currentStateIndices, setCurrentStateIndices] = useState(
     sortFunctions.map(() => 0)
   )
-  const [audio] = useState(
-    new Audio(
-      '/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3'
-    )
-  )
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null)
 
   const sortedStates = sortFunctions.map(({ func }) => func(list.slice()))
   const totalStates = sortedStates.map((states) => states.length)
+
+  useEffect(() => {
+    setAudio(
+      new Audio(
+        '/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3'
+      )
+    )
+  }, [])
 
   const handlePlayPauseRestart = useCallback(() => {
     if (isPlaying && start) {
@@ -46,9 +50,9 @@ export default function SortingComparisons({
 
   useEffect(() => {
     if (isPlaying && start) {
-      audio.play().catch((error) => console.error('Playback error:', error))
+      audio?.play().catch((error) => console.error('Playback error:', error))
     } else {
-      audio.pause()
+      audio?.pause()
     }
   }, [isPlaying, start, audio])
 
